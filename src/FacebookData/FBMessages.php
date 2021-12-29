@@ -1,5 +1,7 @@
 <?php
 
+namespace FacebookData;
+
 class FBMessages {
     public $participants;
     public $messages;
@@ -11,9 +13,9 @@ class FBMessages {
 
 	public function __construct($json_file) {
 		if (is_file($json_file)) {
-			$jsonData = fixed_json_data($json_file);
+			$jsonData = $this->fixed_json_data($json_file);
 			$this->participants = $jsonData->participants;
-			$this->messages = $jsonData->messages;
+			$this->messages = array_reverse($jsonData->messages);
 			$this->title = $jsonData->title;
 			$this->is_still_participant = $jsonData->is_still_participant;
 			$this->thread_type = $jsonData->thread_type;
@@ -48,17 +50,14 @@ class FBMessages {
 		}
 		return;
 	}
-}
 
-function fixed_json_data($json_file) {
-	function replace_with_byte($match) {
-		return chr(hexdec($match[1]));
+	private function fixed_json_data($json_file) {
+		if (is_file($json_file)) { 
+			$json_data = file_get_contents($json_file);
+			$data = preg_replace_callback('/\\\\u00([a-f0-9]{2})/', function ($m) { return chr(hexdec($m[1])); }, $json_data);
+			$json_data = json_decode($data, false);
+			return $json_data;
+		}
+		return;
 	}
-	if (is_file($json_file)) { 
-		$json_data = file_get_contents($json_file);
-		$data = preg_replace_callback('/\\\\u00([a-f0-9]{2})/', 'replace_with_byte', $json_data);
- 		$json_data = json_decode($data, false);
-		return $json_data;
-	}
-	return;
 }

@@ -1,0 +1,23 @@
+{
+    "name": "am0n666/FacebookData",
+    "type": "library",
+    "description": "FacebookData helper for getting Facebook downloaded JSON files)",
+    "keywords": ["FacebookData"],
+    "license": "Apache-2.0",
+    "autoload": {
+        "psr-4": {
+            "FacebookData\\": "src/FacebookData"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FacebookData\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5|^9.0"
+    }
+}

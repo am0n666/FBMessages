@@ -2,6 +2,8 @@
 
 namespace FacebookData;
 
+use FacebookData\FBHelpers;
+
 class FBMessages {
     public $participants;
     public $messages;
@@ -13,7 +15,7 @@ class FBMessages {
 
 	public function __construct($json_file) {
 		if (is_file($json_file)) {
-			$jsonData = $this->fixed_json_data($json_file);
+			$jsonData = FBHelpers::fixed_json_data($json_file);
 			$this->participants = $jsonData->participants;
 			$this->messages = array_reverse($jsonData->messages);
 			$this->title = $jsonData->title;
@@ -47,16 +49,6 @@ class FBMessages {
 					return null;
 				}
 			}
-		}
-		return;
-	}
-
-	private function fixed_json_data($json_file) {
-		if (is_file($json_file)) { 
-			$json_data = file_get_contents($json_file);
-			$data = preg_replace_callback('/\\\\u00([a-f0-9]{2})/', function ($m) { return chr(hexdec($m[1])); }, $json_data);
-			$json_data = json_decode($data, false);
-			return $json_data;
 		}
 		return;
 	}

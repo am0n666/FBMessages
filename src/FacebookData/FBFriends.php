@@ -26,8 +26,8 @@ class FBFriends {
 			$list = array_diff(scandir($inbox_dir), array('.', '..'));
 			$i = 0;
 			foreach($list as $name){
-				if(is_dir($inbox_dir.DIRECTORY_SEPARATOR.$name)){
-					$json_file = $inbox_dir.DIRECTORY_SEPARATOR.$name.DIRECTORY_SEPARATOR.'message_1.json';
+				if(is_dir($inbox_dir.'/'.$name)){
+					$json_file = $inbox_dir.'/'.$name.'/'.'message_1.json';
 					$jsonData = FBHelpers::fixed_json_data($json_file);
 					$photo = $this->profile_photos_dir . 'default.png';
 					$profile_photo_files = array_diff(scandir($this->profile_photos_dir), array('.', '..'));
@@ -36,7 +36,8 @@ class FBFriends {
 							$photo = $this->profile_photos_dir . $fd;
 					}
 					$friend_list->$i = (object)[
-						'dir' => $name,
+						'json_file' => $inbox_dir . '/' . $name . '/' . 'message_1.json',
+						'dir_name' => $name,
 						'name' => $jsonData->title,
 						'profile_photo' => $photo,
 					];
